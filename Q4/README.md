@@ -47,4 +47,4 @@ if(free seat is available){
   
 ## Conclusion
 
-The Sleeping Barbers Problem is a classic problem in computer science that involves coordinating the actions of multiple threads to ensure that they don't interfere with each other. The solution involves using semaphores to ensure mutual exclusion and coordinate the actions of the barbers and customers. The solution is efficient, and the program runs without any issues.
+The Sleeping Barbers Problem is a classic problem in computer science that involves coordinating the actions of multiple threads to ensure that they don't interfere with each other. The solution involves using semaphores to ensure mutual exclusion and coordinate the actions of the barbers and customers.
