@@ -25,15 +25,15 @@ The functions in the program can be summarised as:
 
 #### `barberThread`
 
-Puts waiting barbers to sleep.<br />
-Selects the next customer for the haircut.<br />
+* Puts waiting barbers to sleep.<br />
+* Selects the next customer for the haircut.<br />
 
 
 #### `customerThread`
 
-Checks for availability of seats.<br />
-If a seat is available, it puts incoming customer on the seat.<br />
-Else the customer leaves the shop.<br />
+* Checks for availability of seats.<br />
+* If a seat is available, it puts incoming customer on the seat.<br />
+* Else the customer leaves the shop.<br />
   
 ## Conclusion
 
