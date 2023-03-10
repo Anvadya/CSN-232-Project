@@ -23,27 +23,17 @@ The solution involves using the following semaphores:
 
 The algorithm can be summarised as:
 
-#### Barber
+#### `barberThread`
 
-wait(`barbers`)
-wait(`mutex`)
-Select next customer and cut his hair
-signal(`mutex`)
-signal(`customers`)
+Puts waiting barbers to sleep.<br />
+Selects the next customer for the haircut.<br />
 
-#### Customer
 
-wait(`mutex`)
-if(free seat is available){
-  Seat the customer
-  signal(`mutex`)
-  signal(`barbers`)
-  wait(`customers`)
-  //The barbers are woken up and the customers added to the customer queue.
-}else{
-  The customer leaves.
-  signal(`mutex`)
-}
+#### `customerThread`
+
+Checks for availability of seats.<br />
+If a seat is available, it puts incoming customer on the seat.<br />
+Else the customer leaves the shop.<br />
   
 ## Conclusion
 
