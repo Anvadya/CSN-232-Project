@@ -21,7 +21,7 @@ The solution involves using the following semaphores:
 * `barbers` - used to maintain the barbers queue
 * `mutex` - used to ensure mutual exclusion in the critical secction of code
 
-The algorithm can be summarised as:
+The functions in the program can be summarised as:
 
 #### `barberThread`
 
