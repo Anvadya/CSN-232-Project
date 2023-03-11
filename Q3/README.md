@@ -1,0 +1,35 @@
+ # CSN-232 GROUP PROJECT
+ ##    DINING PHILOSOPHERS PROBLEM
+ ### Solved by: KULKARNI SOURABH SHRINIVASRAO(21114053)
+
+ ### Features: **Deadlock free, starvation free, variable number of philosophers.**
+
+The dining philosopher's problem is the classical problem of synchronization which says that Five philosophers are sitting around a circular table and their job is to think and eat alternatively. A bowl of noodles is placed at the center of the table along with five chopsticks for each of the philosophers. To eat a philosopher needs both their right and a left chopstick. A philosopher can only eat if both immediate left and right chopsticks of the philosopher is available. In case if both immediate left and right chopsticks of the philosopher are not available then the philosopher puts down their (either left or right) chopstick and starts thinking again.
+### Avoiding deadlock:
+  In this implementation to avoid deadlock, we employ assymetric implementation in which odd numbered philosopher will first get the right chopstick and even numbered will get the left one first.this will avoid the deadlock
+
+### Avoiding starvation:
+ For this, we maintain an array count[N] which stores how many times ith philosopher has eaten. we allow a philosopher to eat only if he has eaten less than his neighbours.In this way, we make both chopsticks available to the philosopher who Thus, no philosopher can get starved for long periods.
+
+ ### expected output:
+   ```
+   .
+   .
+   .
+   Philosopher 4 is thinking
+Philosopher 6 is thinking 
+Philosopher 2 Finished eating
+Philosopher 5 didn't eat to avoid starvation
+Philosopher 1 is eating 
+.
+.
+.
+```
+
+### For executing:
+execute following commands in a linux system:
+```
+  gcc -pthread -o h <fileName>.c
+  ./h
+
+  ```
