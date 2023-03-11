@@ -4,6 +4,7 @@
 #include <pthread.h>
 
 pthread_mutex_t mut;
+pthread_cond_t condVar;
 
 #define lc ((n<<1)+1)
 #define rc ((n<<1)+2)
@@ -27,6 +28,7 @@ void push(int n, int b, int e){
 void build(int n, int b, int e){
     if(n == 0){
         pthread_mutex_init(&mut, NULL);
+        pthread_cond_init(&condVar, NULL);
     }
     lazy[n] = 0;
     if(b == e){
@@ -68,8 +70,16 @@ int query(int n, int b, int e, int i, int j){
     return (query(lc, b, mid, i, j) + query(rc, mid+1, e, i, j));
 }
 
-int allocate(int l, int r){
+int allocate(int l, int r, int forceAllocate){
     pthread_mutex_lock(&mut);
+    if(forceAllocate){
+        while(query(0, 0, N-1, l, r) != 0){
+            pthread_cond_wait(&condVar, &mut);
+        }
+        update(0, 0, N-1, l, r, 1);
+        pthread_mutex_unlock(&mut);
+        return 1;
+    }
     if(query(0, 0, N-1, l, r) == 0){
         update(0, 0, N-1, l, r, 1);
         pthread_mutex_unlock(&mut);
@@ -85,6 +95,7 @@ void deallocate(int l, int r){
     pthread_mutex_lock(&mut);
     update(0, 0, N-1, l, r, -1);
     pthread_mutex_unlock(&mut);
+    pthread_cond_signal(&condVar);
     return;
 }
 
