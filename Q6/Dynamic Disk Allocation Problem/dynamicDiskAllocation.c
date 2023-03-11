@@ -31,9 +31,9 @@ void* cpuProcess(void *args){
     int pid = *((int *)args);
     int t1 = rand()%MEM_RANGE;
     int t2 = rand()%MEM_RANGE;
-    // int l = MIN(t1, t2);
-    // int r = MAX(t1, t2);
-    int l = 10, r = 25;
+    int l = MIN(t1, t2);
+    int r = MAX(t1, t2);
+//     int l = 10, r = 25;
     printf("Trying to allocate memory range from: %d to %d by process: %d \n", l, r, pid);
     while(allocate(l,r) == 0) {printf("Failed to allocate memory to process %d, trying again......\n", pid); sleep(1);}
     printf("Memory allocated succesfully to process %d.\n", pid);
