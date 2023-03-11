@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "DiskLock.h"
-#include "semaphore.h"
 
 #define NO_OF_CPU 8
 const int MEM_RANGE = N;
@@ -33,11 +32,14 @@ void* cpuProcess(void *args){
     int t2 = rand()%MEM_RANGE;
     int l = MIN(t1, t2);
     int r = MAX(t1, t2);
-//     int l = 10, r = 25;
+    // int l = 10, r = 25;
     printf("Trying to allocate memory range from: %d to %d by process: %d \n", l, r, pid);
-    while(allocate(l,r) == 0) {printf("Failed to allocate memory to process %d, trying again......\n", pid); sleep(1);}
+    fflush(stdout);
+    while(allocate(l,r,1) == 0) {printf("Failed to allocate memory to process %d, trying again......\n", pid); fflush(stdout); sleep(1);}
     printf("Memory allocated succesfully to process %d.\n", pid);
+    fflush(stdout);
     sleep(1);
     deallocate(l, r);
     printf("Memory deallocated by process %d\n", pid);
+    fflush(stdout);
 }
