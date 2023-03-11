@@ -1,6 +1,9 @@
 #ifndef DISKL_H_INCLUDED
 #define DISKL_H_INCLUDED
 
+#include <pthread.h>
+
+pthread_mutex_t mut;
 
 #define lc ((n<<1)+1)
 #define rc ((n<<1)+2)
@@ -9,6 +12,7 @@
 int v[4*N], lazy[4*N];
 
 void push(int n, int b, int e){
+    // pthread_mutex_lock(&mut);
     if(lazy[n] == 0) return;
     v[n] += (e-b+1)*lazy[n];
     if(b!=e){
@@ -16,10 +20,14 @@ void push(int n, int b, int e){
         lazy[rc] += lazy[n];
     }
     lazy[n] = 0;
+    // pthread_mutex_unlock(&mut);
     return;
 }
 
 void build(int n, int b, int e){
+    if(n == 0){
+        pthread_mutex_init(&mut, NULL);
+    }
     lazy[n] = 0;
     if(b == e){
         v[n] = 0;
@@ -34,6 +42,7 @@ void build(int n, int b, int e){
 }
 
 void update(int n, int b, int e, int i, int j, int val){
+    // pthread_mutex_lock(&mut);
     push(n, b, e);
     if(b > j || e < i) return;
     if(i <= b && e <= j){
@@ -45,15 +54,38 @@ void update(int n, int b, int e, int i, int j, int val){
     update(lc, b, mid, i, j, val);
     update(rc, mid+1, e, i, j, val);
     v[n] = v[lc] + v[rc];
+    // pthread_mutex_unlock(&mut);
     return;
 }
 
 int query(int n, int b, int e, int i, int j){
+    // pthread_mutex_lock(&mut);
     push(n, b, e);
     if(i > e || j < b) return 0;
     if(i<=b && e<=j) return v[n];
     int mid = (b+e)>>1;
+    // pthread_mutex_unlock(&mut);
     return (query(lc, b, mid, i, j) + query(rc, mid+1, e, i, j));
+}
+
+int allocate(int l, int r){
+    pthread_mutex_lock(&mut);
+    if(query(0, 0, N-1, l, r) == 0){
+        update(0, 0, N-1, l, r, 1);
+        pthread_mutex_unlock(&mut);
+        return 1;
+    }
+    else{
+        pthread_mutex_unlock(&mut);
+        return 0;
+    }
+}
+
+void deallocate(int l, int r){
+    pthread_mutex_lock(&mut);
+    update(0, 0, N-1, l, r, -1);
+    pthread_mutex_unlock(&mut);
+    return;
 }
 
 #endif
