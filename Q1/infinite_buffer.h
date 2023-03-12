@@ -6,6 +6,7 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define n_pro 10
 #define n_con 5
+#define npc 5 // max items produced or consumed by a producer or consumer 
 
 sem_t empty;
 sem_t full;
@@ -17,7 +18,7 @@ pthread_mutex_t mutex;
 void *producer(void *p)
 {   
     int item;
-    for(int i = 0; i < 1000005; i++) {
+    for(int i = 0; i < npc; i++) {
         item = rand(); // Produce an random item
         sem_wait(&empty);
         pthread_mutex_lock(&mutex);
@@ -31,7 +32,7 @@ void *producer(void *p)
 
 void *consumer(void *c)
 {   
-    for(int i = 0; i < 1000005; i++) {
+    for(int i = 0; i < npc; i++) {
         sem_wait(&full);
         pthread_mutex_lock(&mutex);
         int item = buffer[out];
