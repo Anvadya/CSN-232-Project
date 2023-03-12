@@ -3,6 +3,9 @@
 #include <semaphore.h>
 #include <stdlib.h>
 
+#define n_pro 10
+#define n_con 5
+
 sem_t empty;
 sem_t full;
 int in = 0;
@@ -40,26 +43,26 @@ void *consumer(void *c)
 
 
 int main() {
-    pthread_t pro[6],con[6];
+    pthread_t pro[n_pro],con[6];
     pthread_mutex_init(&mutex, NULL);
     sem_init(&empty,0,1000005);
     sem_init(&full,0,0);
 
     int a[6] = {1,2,3,4,5,6}; //Just used for numbering the producer and consumer
 
-    for(int i = 0; i < 6; i++) {
+    for(int i = 0; i < n_pro; i++) {
         pthread_create(&pro[i], NULL, (void *)producer, (void *)&a[i]);
     }
   
-    for(int i = 0; i < 6; i++) {
+    for(int i = 0; i < n_con; i++) {
         pthread_create(&con[i], NULL, (void *)consumer, (void *)&a[i]);
     }
 
-    for(int i = 0; i < 6; i++) {
+    for(int i = 0; i < n_pro; i++) {
         pthread_join(pro[i], NULL);
     }
   
-    for(int i = 0; i < 6; i++) {
+    for(int i = 0; i < n_con; i++) {
         pthread_join(con[i], NULL);
     }
 
