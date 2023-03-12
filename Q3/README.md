@@ -9,7 +9,7 @@ The dining philosopher's problem is the classical problem of synchronization whi
   In this implementation to avoid deadlock, we employ assymetric implementation in which odd numbered philosopher will first get the right chopstick and even numbered will get the left one first.this will avoid the deadlock
 
 ### Avoiding starvation:
- For this, we maintain an array count[N] which stores how many times ith philosopher has eaten. we allow a philosopher to eat only if he has eaten less than his neighbours.In this way, we make both chopsticks available to the philosopher who Thus, no philosopher can get starved for long periods.
+ For this, we maintain an array count[N] which stores how many times ith philosopher has eaten. we allow a philosopher to eat only if he has eaten less than his neighbours.In this way, we make both chopsticks available to the philosopher who is starving for duration greater than its neighbours.Thus, no philosopher can get starved for long periods.
 
  ### expected output:
    ```
