@@ -3,6 +3,7 @@
 #include <semaphore.h>
 #include <stdlib.h>
 
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define n_pro 10
 #define n_con 5
 
@@ -48,13 +49,17 @@ int main() {
     sem_init(&empty,0,1000005);
     sem_init(&full,0,0);
 
-    int a[6] = {1,2,3,4,5,6}; //Just used for numbering the producer and consumer
+    int max = MAX(n_pro, n_con);
+    int num[max];
+    
 
     for(int i = 0; i < n_pro; i++) {
+        num[i] = i+1;
         pthread_create(&pro[i], NULL, (void *)producer, (void *)&a[i]);
     }
   
     for(int i = 0; i < n_con; i++) {
+        num[i] = i+1;
         pthread_create(&con[i], NULL, (void *)consumer, (void *)&a[i]);
     }
 
