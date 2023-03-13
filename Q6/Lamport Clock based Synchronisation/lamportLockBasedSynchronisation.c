@@ -29,7 +29,7 @@ int main(){
         pthread_create(&process_thr[i], NULL, (void *)process, (void *)&pid[i+1]);
     }
     for(int i = 0; i < NO_OF_PROCESSES; ++i){
-        pthread_join(processs_thr[i], NULL);
+        pthread_join(process_thr[i], NULL);
     }
 }   
 
