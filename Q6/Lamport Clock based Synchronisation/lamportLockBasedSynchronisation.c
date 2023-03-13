@@ -13,7 +13,7 @@ void *process();
 
 int main(){
     initialise();
-    pthread_t processs[NO_OF_PROCESSES];
+    pthread_t process_thr[NO_OF_PROCESSES];
     int pid[NO_OF_PROCESSES+1];
     for(int i = 0; i < NO_OF_PROCESSES+1; ++i){
         for(int j = 0; j < NO_OF_OPERATIONS; ++j){
@@ -26,10 +26,10 @@ int main(){
     operations[1][6] = -2;
     for(int i = 0; i < NO_OF_PROCESSES+1; ++i) pid[i] = i;
     for(int i = 0; i < NO_OF_PROCESSES; ++i){
-        pthread_create(&processs[i], NULL, (void *)process, (void *)&pid[i+1]);
+        pthread_create(&process_thr[i], NULL, (void *)process, (void *)&pid[i+1]);
     }
     for(int i = 0; i < NO_OF_PROCESSES; ++i){
-        pthread_join(processs[i], NULL);
+        pthread_join(processs_thr[i], NULL);
     }
 }   
 
