@@ -11,7 +11,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include "semaphore.h" //IMPLEMENTED BY GROUP MEMBERS, NOT THE STANDARD ONE.
 #define N 7            // can be varied
 void *liftTheLeftChopstick(int n);
 void *liftTheRightChopstick(int n);
