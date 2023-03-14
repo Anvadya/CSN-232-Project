@@ -9,8 +9,7 @@
 #define npc 2 // max items produced or consumed by a producer or consumer 
 
 sem_t full;
-pthread_mutex_t mutex;
-  
+pthread_mutex_t mutex;  
 
 typedef struct queue queue;
 
@@ -54,7 +53,7 @@ void *producer(void *p)
 {   
     int item;
     for(int i = 0; i < npc; i++) {
-        item = rand()%100; // Produce an random item
+        item = rand()%100; // Produce a random item
         pthread_mutex_lock(&mutex);
         add(item);
         printf("Producer %d: Insert Item %d \n", *((int *)p),item);
@@ -74,7 +73,6 @@ void *consumer(void *c)
         pthread_mutex_unlock(&mutex);
     }
 }
-
 
 int main() {
     
