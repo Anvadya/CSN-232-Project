@@ -9,7 +9,6 @@
 #define npc 2 // max items produced or consumed by a producer or consumer 
 #define INITIAL_SIZE 8 //initial size of dynamic array
 
-sem_t empty;
 sem_t full;
 int in = 0;
 int out = 0;
@@ -93,7 +92,6 @@ void *producer(void *p)
     int item;
     for(int i = 0; i < npc; i++) {
         item = rand()%100; // Produce an random item
-        sem_wait(&empty);
         pthread_mutex_lock(&mutex);
         insertItem(buffer, item);
         printf("Producer %d: Insert Item %d at %d\n", *((int *)p),getItem(buffer, in),in);
@@ -112,7 +110,6 @@ void *consumer(void *c)
         printf("Consumer %d: Remove Item %d from %d\n",*((int *)c),item, out);
         out = (out+1);
         pthread_mutex_unlock(&mutex);
-        sem_post(&empty);
     }
 }
 
@@ -121,7 +118,6 @@ int main() {
     arrayInit(&buffer);
     pthread_t pro[n_pro],con[n_con];
     pthread_mutex_init(&mutex, NULL);
-    sem_init(&empty,0,1000005);
     sem_init(&full,0,0);
 
     int max = MAX(n_pro, n_con);
@@ -146,7 +142,6 @@ int main() {
     }
 
     pthread_mutex_destroy(&mutex);
-    sem_destroy(&empty);
     sem_destroy(&full);
     freeArray(buffer);
 
