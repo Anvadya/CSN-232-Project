@@ -14,7 +14,7 @@ int in = 0;
 int out = 0;
 pthread_mutex_t mutex;
   
-// base structure
+// dynamic array defined
 typedef struct {
     size_t size;
     size_t capacity;
@@ -22,17 +22,7 @@ typedef struct {
 }dynamic_array;
 
 dynamic_array* buffer;
-// function prototypes
-// array container functions
-void arrayInit(dynamic_array** arr_ptr);
-void freeArray(dynamic_array* container);
-  
-// Basic Operation functions
-void insertItem(dynamic_array* container, int item);
-int getItem(dynamic_array* container, int i);
 
-//------Function Definitions------
-// Array initialization
 void arrayInit(dynamic_array** arr_ptr)
 {
     dynamic_array *container;
@@ -53,7 +43,6 @@ void arrayInit(dynamic_array** arr_ptr)
     *arr_ptr = container;
 }
   
-//  Insertion Operation
 void insertItem(dynamic_array* container, int item)
 {
     if (container->size == container->capacity) {
@@ -68,8 +57,7 @@ void insertItem(dynamic_array* container, int item)
     }
     container->array[container->size++] = item;
 }
-  
-// Retrieve Item at Particular Index
+
 int getItem(dynamic_array* container, int index)
 {
     if(index >= container->size) {
@@ -78,8 +66,7 @@ int getItem(dynamic_array* container, int index)
     }
     return container->array[index];
 }
-  
-// Freeing the memory allocated to the array
+
 void freeArray(dynamic_array* container)
 {
     free(container->array);
@@ -87,6 +74,7 @@ void freeArray(dynamic_array* container)
 }
 
 
+// producer block code
 void *producer(void *p)
 {   
     int item;
@@ -101,6 +89,7 @@ void *producer(void *p)
     }
 }
 
+//consumer block code
 void *consumer(void *c)
 {   
     for(int i = 0; i < npc; i++) {
