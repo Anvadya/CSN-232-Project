@@ -23,10 +23,10 @@ When the index reaches the end of the buffer, it wraps around to the beginning.
 
 ## How to use
 ```
-Clone the repository: git clone https://github.com/username/repo.git
-Navigate to the directory: cd repo
-Compile the code: gcc -pthread -o main main.c
-Run the program: ./main
+Clone the repository: git clone https://github.com/Anvadya/CSN-232-Project.git
+Navigate to the directory: cd CSN-232-Project/Q1/Cyclic\ Buffer/
+Compile the code: gcc Producer_Consumer_Cyclic.c -o thread -lpthread
+Run the program: ./thread
 ```
 
 ## Sample Output
