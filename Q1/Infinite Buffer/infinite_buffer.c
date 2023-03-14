@@ -27,19 +27,9 @@ void arrayInit(dynamic_array** arr_ptr)
 {
     dynamic_array *container;
     container = (dynamic_array*)malloc(sizeof(dynamic_array));
-    if(!container) {
-        printf("Memory Allocation Failed\n");
-        exit(0);
-    }
-  
     container->size = 0;
     container->capacity = INITIAL_SIZE;
     container->array = (int *)malloc(INITIAL_SIZE * sizeof(int));
-    if (!container->array){
-        printf("Memory Allocation Failed\n");
-        exit(0);
-    }
-  
     *arr_ptr = container;
 }
   
@@ -49,21 +39,12 @@ void insertItem(dynamic_array* container, int item)
         int *temp = container->array;
         container->capacity <<= 1;
         container->array = realloc(container->array, container->capacity * sizeof(int));
-        if(!container->array) {
-            printf("Out of Memory\n");
-            container->array = temp;
-            return;
-        }
     }
     container->array[container->size++] = item;
 }
 
 int getItem(dynamic_array* container, int index)
 {
-    if(index >= container->size) {
-        printf("Index Out of Bounds\n");
-        return -1;
-    }
     return container->array[index];
 }
 
