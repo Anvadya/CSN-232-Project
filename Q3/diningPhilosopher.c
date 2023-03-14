@@ -22,7 +22,7 @@ int main()
 {
     for (int i = 0; i < N; i++)
     {
-        count[i] = 0;
+        count[i] = 0; //everyone has eaten 0 times
     }
     int i, k; // i for iteration purposes.k for storing return values of different pthread functions
     void *msg;
@@ -85,17 +85,17 @@ void *liftTheLeftChopstick(int n)
                 printf("\nPhilosopher %d is eating ", n);
                 count[n]++;
                 sleep(rand() % N + 1); // random time 1-N can be needed for eating
-                pthread_mutex_unlock(&chopstick[n]);
+                pthread_mutex_unlock(&chopstick[n]);  //release the chopsticks
                 pthread_mutex_unlock(&chopstick[(n + 1) % N]);
                 printf("\nPhilosopher %d Finished eating ", n);
             }
             else
             {
-                printf("\nPhilosopher %d didn't eat to avoid starvation ", n);
+                printf("\nPhilosopher %d didn't eat to avoid starvation ", n);// giving chance to the neighbor for eating
             }
         }
         else
-        { // thinking is done
+        { // thinking state
             printf("\nPhilosopher %d is thinking ", n);
             sleep(2);
         }
@@ -138,9 +138,9 @@ void *liftTheRightChopstick(int n)
             printf("\nPhilosopher %d is thinking ", n);
             sleep(2);
         }
-        sleep(5);
+        sleep(5);//sleep for avoid clash at console
     }
 }
 // to execute:
 // gcc -pthread -o h h.c
-//./c
+//./h
