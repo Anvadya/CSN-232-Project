@@ -16,7 +16,7 @@ int operations[NO_OF_PROCESSES+1][NO_OF_OPERATIONS];
 //so if operations[i][j] = i, then only the thread's local data is required
 //but if operations[i][j] = k (k is not i) then it means thaat data from thread k is:
 //   a) required (has to be read) if k is a negative number
-//   b) has to be sent (writte) if k is a positive number
+//   b) has to be sent (write) if k is a positive number
 
 void *process();
 
@@ -39,6 +39,9 @@ int main(){
     operations[2][2] = -1;
     operations[2][4] = 1;
     operations[1][6] = -2;
+    //IMPORTANT; MESSAGE PASSING EDGES BETWEEN TWO THREADS MUST NOT INTERSECT EACH OTHER
+    //(To avoid cycles in the graph, the graph ought to be a DAG)
+    //Cycles can lead to Deadlocks (to be ensured by the user, Ostrich algorithm is used)
     
     //Initialising the pids
     for(int i = 0; i < NO_OF_PROCESSES+1; ++i) pid[i] = i;
@@ -46,7 +49,7 @@ int main(){
     for(int i = 0; i < NO_OF_PROCESSES; ++i){
         pthread_create(&process_thr[i], NULL, (void *)process, (void *)&pid[i+1]);
     }
-    //Merging threads (to avoid zombie threaads)
+    //Merging threads (to avoid zombie threads)
     for(int i = 0; i < NO_OF_PROCESSES; ++i){
         pthread_join(process_thr[i], NULL);
     }
@@ -79,7 +82,7 @@ void *process(void *args){
                 ++clock_timer; //Incrementing clock timer
             }
             else{
-                data = readMessage(-operations[pid][i], pid); //Readding the message
+                data = readMessage(-operations[pid][i], pid); //Reading the message
                 //Note: The process goes to a wait state if the message has not yet reached the pipe (intended behaviour to guarantee correctness)
                 printf("Read data from %d by %d, data = %d\n", -operations[pid][i], pid, data);
                 fflush(stdout);

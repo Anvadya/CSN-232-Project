@@ -7,53 +7,47 @@
 #define n_pro 10
 #define n_con 10
 #define npc 2 // max items produced or consumed by a producer or consumer 
-#define INITIAL_SIZE 8 //initial size of dynamic array
 
 sem_t full;
-int in = 0;
-int out = 0;
 pthread_mutex_t mutex;
   
-// dynamic array defined
-typedef struct {
-    size_t size;
-    size_t capacity;
-    int* array;
-}dynamic_array;
 
-dynamic_array* buffer;
+typedef struct queue queue;
 
-void arrayInit(dynamic_array** arr_ptr)
-{
-    dynamic_array *container;
-    container = (dynamic_array*)malloc(sizeof(dynamic_array));
-    container->size = 0;
-    container->capacity = INITIAL_SIZE;
-    container->array = (int *)malloc(INITIAL_SIZE * sizeof(int));
-    *arr_ptr = container;
-}
-  
-void insertItem(dynamic_array* container, int item)
-{
-    if (container->size == container->capacity) {
-        int *temp = container->array;
-        container->capacity <<= 1;
-        container->array = realloc(container->array, container->capacity * sizeof(int));
+struct queue{
+    queue * back_pointer;
+    int data;
+};
+
+queue * head = NULL;
+queue * tail = NULL;
+
+void add(int data){
+    queue * tmp = (queue *) malloc(sizeof(queue));
+    tmp->data = data;
+    tmp->back_pointer = NULL;
+    if(head == NULL){
+        head = tail = tmp;
     }
-    container->array[container->size++] = item;
+    else{
+        tail->back_pointer = tmp;
+        tail = tmp;
+    }
 }
 
-int getItem(dynamic_array* container, int index)
-{
-    return container->array[index];
+int extract(){
+    if(head == NULL) return -1;
+    queue *tmp = head;
+    if(head->back_pointer == NULL){
+        head = tail = NULL;
+    }
+    else{
+        head = head->back_pointer;
+    }
+    int dataToBeReturned = tmp->data;
+    free(tmp);
+    return dataToBeReturned;
 }
-
-void freeArray(dynamic_array* container)
-{
-    free(container->array);
-    free(container);
-}
-
 
 // producer block code
 void *producer(void *p)
@@ -62,9 +56,8 @@ void *producer(void *p)
     for(int i = 0; i < npc; i++) {
         item = rand()%100; // Produce an random item
         pthread_mutex_lock(&mutex);
-        insertItem(buffer, item);
-        printf("Producer %d: Insert Item %d at %d\n", *((int *)p),getItem(buffer, in),in);
-        in = (in+1);
+        add(item);
+        printf("Producer %d: Insert Item %d \n", *((int *)p),item);
         pthread_mutex_unlock(&mutex);
         sem_post(&full);
     }
@@ -76,16 +69,15 @@ void *consumer(void *c)
     for(int i = 0; i < npc; i++) {
         sem_wait(&full);
         pthread_mutex_lock(&mutex);
-        int item = getItem(buffer, out);
-        printf("Consumer %d: Remove Item %d from %d\n",*((int *)c),item, out);
-        out = (out+1);
+        int item = extract();
+        printf("Consumer %d: Remove Item %d \n",*((int *)c),item);        
         pthread_mutex_unlock(&mutex);
     }
 }
 
 
 int main() {
-    arrayInit(&buffer);
+    
     pthread_t pro[n_pro],con[n_con];
     pthread_mutex_init(&mutex, NULL);
     sem_init(&full,0,0);
@@ -113,7 +105,6 @@ int main() {
 
     pthread_mutex_destroy(&mutex);
     sem_destroy(&full);
-    freeArray(buffer);
 
     return 0;
 }

@@ -5,7 +5,7 @@
 #define buffer_size 30
 #define no_p 5 //No. of Producers
 #define no_c 10 //No. of Consumers
-#define max_prod 1 // Maximum items a producer can produce or a consumer can consume
+#define max_prod 2 // Maximum items a producer can produce or a consumer can consume
 #define max_cons (max_prod*no_p)/no_c // Maximum items a producer can produce or a consumer can consume
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
