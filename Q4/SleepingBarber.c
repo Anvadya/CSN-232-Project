@@ -119,7 +119,8 @@ void barberThread(void *tmp)
         printf("Barber-%d has gone to sleep.\n",index);
         sem_wait(&barbers);                                 // Barber goes to sleep
         sem_wait(&mutex);                                   // Mutex to protect seat changes
-        next = (++next) % TOTAL_CHAIRS;                     // Select next customer
+        next++;
+        next = next % TOTAL_CHAIRS;                         // Select next customer
         myNext = next;
         c = seatPocket[myNext];                  
         seatPocket[myNext] =(pthread_self());     
