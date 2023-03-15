@@ -18,7 +18,7 @@ a Last-in-first-out (LIFO) implementation.
 ```
 Clone the repository: git clone https://github.com/Anvadya/CSN-232-Project.git
 Navigate to the directory: cd CSN-232-Project/Q1/Bounded\ Buffer/
-Compile the code: gcc Producer_Consumer_Cyclic.c -o thread -lpthread
+Compile the code: gcc Producer_Consumer_Bounded.c -o thread -lpthread
 Run the program: ./thread
 ```
 

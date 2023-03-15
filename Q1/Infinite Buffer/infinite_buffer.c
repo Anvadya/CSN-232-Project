@@ -1,15 +1,15 @@
 #include <stdio.h>
 #include <pthread.h>
-#include <semaphore.h>
+#include "semaphore.h"
 #include <stdlib.h>
+#include <pthread.h>
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
-#define n_pro 10
+#define n_pro 5
 #define n_con 10
 #define npc 2 // max items produced or consumed by a producer or consumer 
 
-sem_t full;
-pthread_mutex_t mutex;  
+sem_t full, mutex;
 
 typedef struct queue queue;
 
@@ -54,10 +54,10 @@ void *producer(void *p)
     int item;
     for(int i = 0; i < npc; i++) {
         item = rand()%100; // Produce a random item
-        pthread_mutex_lock(&mutex);
+        sem_wait(&mutex);
         add(item);
         printf("Producer %d: Insert Item %d \n", *((int *)p),item);
-        pthread_mutex_unlock(&mutex);
+        sem_post(&mutex);
         sem_post(&full);
     }
 }
@@ -67,17 +67,17 @@ void *consumer(void *c)
 {   
     for(int i = 0; i < npc; i++) {
         sem_wait(&full);
-        pthread_mutex_lock(&mutex);
+        sem_wait(&mutex);
         int item = extract();
         printf("Consumer %d: Remove Item %d \n",*((int *)c),item);        
-        pthread_mutex_unlock(&mutex);
+        sem_post(&mutex);
     }
 }
 
 int main() {
     
     pthread_t pro[n_pro],con[n_con];
-    pthread_mutex_init(&mutex, NULL);
+    sem_init(&mutex, 0, 1);
     sem_init(&full,0,0);
 
     int max = MAX(n_pro, n_con);
@@ -101,7 +101,7 @@ int main() {
         pthread_join(con[i], NULL);
     }
 
-    pthread_mutex_destroy(&mutex);
+    sem_destroy(&mutex);
     sem_destroy(&full);
 
     return 0;

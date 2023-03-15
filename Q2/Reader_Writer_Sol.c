@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include "semaphore.h"
 #include <stdbool.h>
+#include <pthread.h>
 
 #define Readers 10 //No. of Readers
 #define Writers 5  //No. of Writers 
 
-sem_t in, out, write; //Semaphores declared
+sem_t in, out, writer; //Semaphores declared
 
 
 
@@ -25,7 +26,7 @@ int main() {
     pthread_t r[Readers], w[Writers]; //initialising reader and writer threads
     sem_init(&in, 0, 1); //initialising semaphore in with value 1
     sem_init(&out, 0, 1); //initialising semaphore out with value 1
-    sem_init(&write, 0, 0); //initialising semaphore write with value 0
+    sem_init(&writer, 0, 0); //initialising semaphore write with value 0
     int rnum[Readers], wnum[Writers];
     
 
@@ -56,7 +57,7 @@ int main() {
     //Semaphores are destroyed
     sem_destroy(&in);
     sem_destroy(&out);
-    sem_destroy(&write);
+    sem_destroy(&writer);
 }
 
 
@@ -76,7 +77,7 @@ void *Reader(void *rno){
 
     //if all readers finish reading and writer is waiting (wrt_wait=1) then writer will aquire the write semaphore
     if (wrt_wait==1 && reader_in==reader_out)
-        sem_post(&write);
+        sem_post(&writer);
     sem_post(&out);
 }
 
@@ -93,7 +94,7 @@ void *Writer(void *wno){
         wrt_wait = true; 
         sem_post(&out);
         //writer will wait on write semaphore which it will get once all readers have finished their execution.
-        sem_wait(&write);
+        sem_wait(&writer);
         //after getting write semaphore, writer proceeds to CS and wrt_wait is set to false
         wrt_wait = false;
     }
