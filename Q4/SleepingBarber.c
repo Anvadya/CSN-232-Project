@@ -84,7 +84,7 @@ void customerThread(void *tmp)
 {   
     sem_wait(&mutex);                                   // Mutex to protect seat changes
     count++;                                            
-    printf("Customer-%d with Id:%d has entered the shop. \n",count,pthread_self());
+    printf("Customer-%d has entered the shop. \n",count);
     if(freeSeats > 0) 
     {
         freeSeats--;                                    
@@ -111,7 +111,7 @@ void barberThread(void *tmp)
 {   
     int index = *(int *)(tmp);      
     int  c;
-    printf("Barber-%d with Id:%d has entered the Shop. \n",index,pthread_self());
+    printf("Barber-%d has entered the Shop. \n",index);
     while(1) 
     {   
         printf("Barber-%d has gone to sleep.\n",index);
@@ -120,7 +120,6 @@ void barberThread(void *tmp)
         next++;
         next = (next) % TOTAL_CHAIRS;                       // Select next customer
         c = seatPocket[next];                  
-        seatPocket[next] =(pthread_self());     
         sem_post(&mutex);
         sem_post(&customers);                               //Customer 'c' is getting a haircut
         printf("Barber-%d was woken up by Customer-%d and is cutting his/her hair.\n",index,c);
