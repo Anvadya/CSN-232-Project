@@ -12,7 +12,7 @@
 #define BARBER_COUNT 4          // Total number of barbers
 #define CUSTOMER_COUNT 30       // Total number of customers
 #define TIME 3                  // Hair cutting time for each customer
-#define UPPER 800000
+#define UPPER 800000            // Vary these UPPER and LOWER values to vary the time gap in between customers arrival
 #define LOWER 200000
 
 // Variable initialization
