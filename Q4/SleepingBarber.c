@@ -125,6 +125,6 @@ void barberThread(void *tmp)
         sem_post(&customers);                               //Customer 'c' is getting a haircut
         printf("Barber-%d was woken up by Customer-%d and is cutting his/her hair.\n",index,c);
         sleep(TIME);
-        printf("Barber-%d has finished cutting hair. \n",index);
+        printf("Barber-%d has finished cutting hair. \n",index); 
     }
 }
