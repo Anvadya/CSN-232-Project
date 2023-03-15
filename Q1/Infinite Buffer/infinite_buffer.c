@@ -7,7 +7,8 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define n_pro 5
 #define n_con 10
-#define npc 2 // max items produced or consumed by a producer or consumer 
+#define max_prod 2 // Maximum items a producer can produce or a consumer can consume
+#define max_cons (max_prod*n_pro)/n_con // Maximum items a producer can produce or a consumer can consume 
 
 sem_t full, mutex;
 
@@ -52,7 +53,7 @@ int extract(){
 void *producer(void *p)
 {   
     int item;
-    for(int i = 0; i < npc; i++) {
+    for(int i = 0; i < max_prod; i++) {
         item = rand()%100; // Produce a random item
         sem_wait(&mutex);
         add(item);
@@ -65,7 +66,7 @@ void *producer(void *p)
 //consumer block code
 void *consumer(void *c)
 {   
-    for(int i = 0; i < npc; i++) {
+    for(int i = 0; i < max_cons; i++) {
         sem_wait(&full);
         sem_wait(&mutex);
         int item = extract();

@@ -24,29 +24,26 @@ Run the program: ./thread
 
 ## Sample Output
 ```
-Producer 1: Insert Item 83
-Producer 1: Insert Item 15
-Producer 2: Insert Item 86
-Producer 2: Insert Item 86
-Producer 3: Insert Item 77
-Producer 3: Insert Item 92
-Producer 5: Insert Item 93
-Producer 5: Insert Item 49
-Consumer 2: Remove Item 49 
-Consumer 1: Remove Item 93 
-Producer 4: Insert Item 35
-Producer 4: Insert Item 21
-Consumer 3: Remove Item 21 
-Consumer 4: Remove Item 35 
-Consumer 5: Remove Item 92 
+Producer 1: Insert Item 83 
+Producer 2: Insert Item 86 
+Producer 4: Insert Item 77 
+Producer 4: Insert Item 92 
+Consumer 3: Remove Item 83 
+Producer 5: Insert Item 35 
+Producer 2: Insert Item 86 
+Producer 3: Insert Item 15 
+Producer 1: Insert Item 93 
+Producer 5: Insert Item 49 
+Producer 3: Insert Item 21 
+Consumer 2: Remove Item 86 
 Consumer 6: Remove Item 77 
-Consumer 7: Remove Item 86 
-Consumer 8: Remove Item 86 
-Consumer 9: Remove Item 15 
-Consumer 10: Remove Item 83
-.
-.
-.
+Consumer 8: Remove Item 92 
+Consumer 5: Remove Item 35 
+Consumer 4: Remove Item 86 
+Consumer 7: Remove Item 15 
+Consumer 9: Remove Item 93 
+Consumer 1: Remove Item 49 
+Consumer 10: Remove Item 21 
 ```
 
 ## Conclusion

@@ -42,7 +42,7 @@ int pop(void)   //implementation of pop operation for stack
 int main()
 {
     pthread_t p[no_p], c[no_c];  //defining two pthreads for producer and consumer
-    psem_init(&mutex,0,1); //initialising mutex 
+    sem_init(&mutex,0,1); //initialising mutex 
     sem_init(&empty, 0, buffer_size); //initialising empty semaphore as size of buffer
     sem_init(&full, 0, 0);  //initialising full semaphore as 0
     int max = MAX(no_p, no_c);
@@ -92,7 +92,7 @@ void *consumer(void *c_no)
     for (int i=0; i<max_cons; i++)
     {        
         sem_wait(&full);   //consumer will have to wait if the buffer is empty i.e. full is 0
-        pthread_mutex_lock(&mutex);
+        sem_wait(&mutex);
         int nextCons = pop();    // consumer will consume the item which is on top of stack i.e. recently added
         printf("Consumer %d: Remove Item %d \n",*((int *)c_no),nextCons);
         sem_post(&mutex);
