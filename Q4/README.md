@@ -18,7 +18,7 @@ The problem can be described as follows:
 There are several ways to solve the Sleeping Barbers Problem. One common approach is to use semaphores to coordinate the actions of the barbers and customers.
 The solution involves using the following semaphores:
 * `customers` - used to maintain the customers queue
-* `barbers` - used to maintain the barbers queue
+* `barbers` - used to maintain the barbers action
 * `mutex` - used to ensure mutual exclusion in the critical secction of code
 
 The functions in the program can be summarised as:
