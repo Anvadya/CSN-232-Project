@@ -88,7 +88,7 @@ void customerThread(void *tmp)
     printf("Customer-%d with Id:%d has entered the shop. \n",count,pthread_self());
     if(freeSeats > 0) 
     {
-        --freeSeats;                                    
+        freeSeats--;                                    
         printf("Customer-%d is sitting on a chair in the waiting room.\n",count);
         nextSeat = (++nextSeat) % TOTAL_CHAIRS;         // Select a chair to sit
         seat = nextSeat;
