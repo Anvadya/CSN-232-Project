@@ -1,4 +1,4 @@
-#DYNAMIC DISK ALLOCATION USING SEGMENT TREES
+# DYNAMIC DISK ALLOCATION USING SEGMENT TREES
 
 Segment trees can be used for efficient disk allocation by representing the disk space as 
 a binary tree data structure. In this tree, each node represents a segment 
@@ -84,6 +84,28 @@ over a specified range for an array.
 Here, we recursively perform updates to ensure that the entire segment tree is affected by the query range
 update, and the changes reflected.
 
+Then, we have the `query()` function, which is used to determine whether a particular range of disk blocks is free or allocated.
+
+```C
+int query(int n, int b, int e, int i, int j){
+    // pthread_mutex_lock(&mut);
+    push(n, b, e);
+    if(i > e || j < b) return 0;
+    if(i<=b && e<=j) return v[n];
+    int mid = (b+e)>>1;
+    // pthread_mutex_unlock(&mut);
+    return (query(lc, b, mid, i, j) + query(rc, mid+1, e, i, j));
+}
+```
+> To perform a query in the segment tree for disk allocation, we start at the root of the tree and recursively traverse the tree
+> to find the appropriate node that represents the range of disk blocks we are interested in. 
+1. If the node represents a range of blocks that is entirely free, we can immediately return a positive result indicating that the entire range is available. 
+
+2. If the node represents a range of blocks that is entirely allocated, we can immediately return a negative result indicating that the entire range is unavailable. 
+
+3. If the node represents a range of blocks that is partially free and partially allocated, we continue recursively traversing the tree to check the children nodes until we have determined the availability of the entire range.
+
+--- 
 
 Consider the following function - 
 The `push()` function does this - 
