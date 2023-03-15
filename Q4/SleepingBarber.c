@@ -10,8 +10,8 @@
 // Define various constants
 #define TOTAL_CHAIRS 16         // Total capacity of the waiting room
 #define BARBER_COUNT 4          // Total number of barbers
-#define CUSTOMER_COUNT 30       // Total number of customers
-#define TIME 3                  // Hair cutting time for each customer
+#define CUSTOMER_COUNT 64       // Total number of customers
+#define TIME 6                  // Hair cutting time for each customer
 #define UPPER 800000
 #define LOWER 200000
 
@@ -84,7 +84,7 @@ void customerThread(void *tmp)
 {   
     sem_wait(&mutex);                                   // Mutex to protect seat changes
     count++;                                            
-    printf("Customer-%d with Id:%d has entered the shop. \n",count,pthread_self());
+    printf("Customer-%d has entered the shop. \n",count);
     if(freeSeats > 0) 
     {
         freeSeats--;                                    
@@ -111,7 +111,7 @@ void barberThread(void *tmp)
 {   
     int index = *(int *)(tmp);      
     int  c;
-    printf("Barber-%d with Id:%d has entered the Shop. \n",index,pthread_self());
+    printf("Barber-%d has entered the Shop. \n",index);
     while(1) 
     {   
         printf("Barber-%d has gone to sleep.\n",index);
@@ -120,11 +120,10 @@ void barberThread(void *tmp)
         next++;
         next = (next) % TOTAL_CHAIRS;                       // Select next customer
         c = seatPocket[next];                  
-        seatPocket[next] =(pthread_self());     
         sem_post(&mutex);
         sem_post(&customers);                               //Customer 'c' is getting a haircut
         printf("Barber-%d was woken up by Customer-%d and is cutting his/her hair.\n",index,c);
         sleep(TIME);
-        printf("Barber-%d has finished cutting hair. \n",index);
+        printf("Barber-%d has finished cutting hair. \n",index); 
     }
 }
