@@ -5,12 +5,12 @@
 #include <pthread.h>
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
-#define n_pro 5
-#define n_con 10
+#define n_pro 5 //No. of Producers
+#define n_con 10 //No. of Consumers
 #define max_prod 2 // Maximum items a producer can produce or a consumer can consume
 #define max_cons (max_prod*n_pro)/n_con // Maximum items a producer can produce or a consumer can consume 
 
-sem_t full, mutex;
+sem_t full, mutex; //Created two semaphores denoting full buffer, mutex
 
 typedef struct queue queue;
 
@@ -54,12 +54,12 @@ void *producer(void *p)
 {   
     int item;
     for(int i = 0; i < max_prod; i++) {
-        item = rand()%100; // Produce a random item
+        item = rand()%100; //item no. is generated using random generator
         sem_wait(&mutex);
-        add(item);
+        add(item); //item no. is then inserted in the buffer queue
         printf("Producer %d: Insert Item %d \n", *((int *)p),item);
         sem_post(&mutex);
-        sem_post(&full);
+        sem_post(&full); //semaphore full will be incremented once an item is produced and inserted to queue
     }
 }
 
@@ -67,31 +67,31 @@ void *producer(void *p)
 void *consumer(void *c)
 {   
     for(int i = 0; i < max_cons; i++) {
-        sem_wait(&full);
+        sem_wait(&full); //consumer will have to wait if the buffer is empty i.e. full is 0
         sem_wait(&mutex);
-        int item = extract();
+        int item = extract();  //consumer will consume the initially produced item and proceeds accordingly
         printf("Consumer %d: Remove Item %d \n",*((int *)c),item);        
-        sem_post(&mutex);
+        sem_post(&mutex); 
     }
 }
 
 int main() {
     
-    pthread_t pro[n_pro],con[n_con];
-    sem_init(&mutex, 0, 1);
-    sem_init(&full,0,0);
+    pthread_t pro[n_pro],con[n_con];  //defining two pthreads for producer and consumer
+    sem_init(&mutex, 0, 1); //initialising mutex
+    sem_init(&full,0,0); //initialising full semaphore as 0
 
-    int max = MAX(n_pro, n_con);
-    int num[max];
+    int max = MAX(n_pro, n_con); 
+    int num[max]; //array representing no. of producers and consumers
 
     for(int i = 0; i < n_pro; i++) {
         num[i] = i+1;
-        pthread_create(&pro[i], NULL, (void *)producer, (void *)&num[i]);
+        pthread_create(&pro[i], NULL, (void *)producer, (void *)&num[i]); //creating pthread for producer
     }
   
     for(int i = 0; i < n_con; i++) {
         num[i] = i+1;
-        pthread_create(&con[i], NULL, (void *)consumer, (void *)&num[i]);
+        pthread_create(&con[i], NULL, (void *)consumer, (void *)&num[i]); //creating pthread for consumer
     }
 
     for(int i = 0; i < n_pro; i++) {
