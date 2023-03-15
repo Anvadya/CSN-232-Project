@@ -130,3 +130,9 @@ Thus, threads equal to the number of processes are created here and they start e
 
 Thus, the processes are assigned seperate, newly created threads to run, and inter-thread communication required to provide partial ordering is facilitated through the usage of pipes.
 
+Note - 
+> Using pipes to implement the distributed Lamport clock ensures that the events are ordered correctly, 
+> and the communication between the processes is synchronized and reliable. However, it is important to 
+> note that using pipes for inter-process communication can introduce performance overheads and scalability 
+> issues, and other mechanisms such as sockets or message queues may be more appropriate in certain scenarios.
+
