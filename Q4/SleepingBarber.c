@@ -3,9 +3,9 @@
 #include <stdio.h>           
 #include <stdlib.h>          
 #include <pthread.h>  
+
+// Include the header file
 #include "semaphore.h"
-
-
 
 // Define various constants
 #define TOTAL_CHAIRS 16         // Total capacity of the waiting room
