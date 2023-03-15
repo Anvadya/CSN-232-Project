@@ -136,3 +136,32 @@ Note -
 > note that using pipes for inter-process communication can introduce performance overheads and scalability 
 > issues, and other mechanisms such as sockets or message queues may be more appropriate in certain scenarios.
 
+---
+
+### EXPECTED OUTPUT : 
+
+```C
+Clock for process: 1 is 1
+Clock for process: 1 is 2
+Clock for process: 1 is 3
+Clock for process: 1 is 4
+Writing data from 1 to 2 at time 4
+Clock for process: 1 is 5
+Clock for process: 1 is 6
+Clock for process: 2 is 1
+Clock for process: 2 is 2
+Read data from 1 by 2, data = 1
+Read clock time from 1 by 2, clock time = 4
+Clock for process: 2 is 6
+Clock for process: 2 is 7
+Writing data from 2 to 1 at time 7
+Clock for process: 2 is 8
+Clock for process: 2 is 9
+Clock for process: 2 is 10
+Clock for process: 2 is 11
+Read data from 2 by 1, data = 2
+Read clock time from 2 by 1, clock time = 7
+Clock for process: 1 is 9
+Clock for process: 1 is 10
+[1] + Done                       "/usr/bin/gdb" --interpreter=mi --tty=${DbgTerm} 0<"/tmp/Microsoft-MIEngine-In-5q54oaby.1gf" 1>"/tmp/Microsoft-MIEngine-Out-iwz45542.otf"
+```
