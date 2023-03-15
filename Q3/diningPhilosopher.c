@@ -11,24 +11,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include "semaphore.h" //IMPLEMENTED BY GROUP MEMBERS, NOT THE STANDARD ONE.
 #define N 7            // can be varied
 void *liftTheLeftChopstick(int n);
 void *liftTheRightChopstick(int n);
 pthread_t philosopher[N];     // N philosophers implemented as N parallel threads.
-pthread_mutex_t chopstick[N]; // N chopsticks as N mutex locks
+sem_t chopstick[N]; // N chopsticks as N mutex locks
 int count[N];
 
 int main()
 {
     for (int i = 0; i < N; i++)
     {
-        count[i] = 0; //everyone has eaten 0 times
+        count[i] = 0;
     }
     int i, k; // i for iteration purposes.k for storing return values of different pthread functions
     void *msg;
     for (i = 0; i < N; i++)
     {
-        pthread_mutex_init(&chopstick[i], NULL); // creating mutex
+        sem_init(&chopstick[i],0,1); // creating mutex
     }
     for (i = 0; i < N; i++) // creating a thread for each philosopher
     {
@@ -55,12 +56,8 @@ int main()
     }
     for (i = 0; i < N; i++)
     {
-        k = pthread_mutex_destroy(&chopstick[i]); // destryoing mutex as work is done
-        if (k != 0)
-        {
-            printf("\n Mutex Destroyed \n");
-            exit(1);
-        }
+        sem_destroy(&chopstick[i]); // destryoing mutex as work is done
+        
     }
     return 0;
 }
@@ -69,7 +66,7 @@ int main()
 void *liftTheLeftChopstick(int n)
 {
     while (1)
-    {
+    {   // we don't know how much times a philosopher will eat so we must have a infinite loop
 
         int state = rand() % 2; // As given in standard problem statement, philosopher may wish to  eat/think randomly
 
@@ -79,23 +76,25 @@ void *liftTheLeftChopstick(int n)
             if (count[n] <= count[(n + N - 1) % N] && count[n] <= count[(n + 1) % N])
             {
                 // we allow  philosopher to eat only if he has eaten less or equal to than his neighbours
-                pthread_mutex_lock(&chopstick[n]);
-                pthread_mutex_lock(&chopstick[(n + 1) % N]);
+                //acquire the semaphores
+               sem_wait(&chopstick[n]);
+               sem_wait(&chopstick[(n + 1) % N]);
 
                 printf("\nPhilosopher %d is eating ", n);
                 count[n]++;
                 sleep(rand() % N + 1); // random time 1-N can be needed for eating
-                pthread_mutex_unlock(&chopstick[n]);  //release the chopsticks
-                pthread_mutex_unlock(&chopstick[(n + 1) % N]);
+                //relase the semaphores
+                sem_post(&chopstick[n]);
+                sem_post(&chopstick[(n + 1) % N]);
                 printf("\nPhilosopher %d Finished eating ", n);
             }
             else
             {
-                printf("\nPhilosopher %d didn't eat to avoid starvation ", n);// giving chance to the neighbor for eating
+                printf("\nPhilosopher %d didn't eat to avoid starvation ", n);
             }
         }
         else
-        { // thinking state
+        { // thinking is done
             printf("\nPhilosopher %d is thinking ", n);
             sleep(2);
         }
@@ -118,14 +117,14 @@ void *liftTheRightChopstick(int n)
             if (count[n] <= count[(n + N - 1) % N] && count[n] <= count[(n + 1) % N])
             {
                 // sequence of lifting chopsticks is reversed
-                pthread_mutex_lock(&chopstick[(n + 1) % N]);
-                pthread_mutex_lock(&chopstick[n]);
+               sem_wait(&chopstick[(n + 1) % N]);
+                sem_wait(&chopstick[n]);
 
                 printf("\nPhilosopher %d is eating ", n);
                 count[n]++;
                 sleep(rand() % N + 1);
-                pthread_mutex_unlock(&chopstick[(n + 1) % N]);
-                pthread_mutex_unlock(&chopstick[n]);
+                sem_post(&chopstick[(n + 1) % N]);
+                sem_post(&chopstick[n]);
                 printf("\nPhilosopher %d Finished eating ", n);
             }
             else
@@ -138,9 +137,9 @@ void *liftTheRightChopstick(int n)
             printf("\nPhilosopher %d is thinking ", n);
             sleep(2);
         }
-        sleep(5);//sleep for avoid clash at console
+        sleep(5);
     }
 }
 // to execute:
 // gcc -pthread -o h h.c
-//./h
+//./c
