@@ -77,6 +77,9 @@ operations[2][2] = -1; //Process(2) receives, at timestamp=2, a message from Pro
 operations[2][4] = 1; //Process(2) sends, at timestamp=4, a message to Process(1)
 operations[1][6] = -2; //Process(1) receive, at timestamp=6, a message from Process(2)
 ```
+
+The timestamps we are talking about imply the local chronological order of the events (i.e., within the parent process) and not the clock values of the processes at that instant. 
+
 ---
 
 ```C
@@ -136,6 +139,15 @@ Note -
 > note that using pipes for inter-process communication can introduce performance overheads and scalability 
 > issues, and other mechanisms such as sockets or message queues may be more appropriate in certain scenarios.
 
+Here is a high-level description of how pipes can be used to implement a distributed Lamport clock:
+
+1. Each process creates a pipe for each other process it communicates with.
+2. Each process initializes its logical clock to 0.
+3. When a process generates an event, it increments its logical clock by 1 and assigns the new value as the timestamp of the event.
+4. When a process sends a message to another process, it includes its current logical clock value in the message, and writes the message to the pipe associated with      the receiving process.
+5. When a process receives a message from another process, it reads the message from the pipe, updates its logical clock to be the maximum of its current logical clock    and the timestamp in the received message, plus 1. This ensures that the clock always moves forward.
+6. After updating its logical clock, the process assigns the updated value as the timestamp of the event corresponding to receiving the message.
+
 ---
 
 ### EXPECTED OUTPUT : 
@@ -165,3 +177,7 @@ Clock for process: 1 is 9
 Clock for process: 1 is 10
 [1] + Done                       "/usr/bin/gdb" --interpreter=mi --tty=${DbgTerm} 0<"/tmp/Microsoft-MIEngine-In-5q54oaby.1gf" 1>"/tmp/Microsoft-MIEngine-Out-iwz45542.otf"
 ```
+
+
+***
+
