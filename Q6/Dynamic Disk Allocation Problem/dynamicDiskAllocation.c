@@ -23,6 +23,7 @@ int main(){
     for(int i = 0; i < NO_OF_CPU; ++i){
         pthread_join(cpu[i], NULL);
     }
+    destroy();
     return 0;
 }
 
