@@ -24,7 +24,7 @@ int filedes[NO_OF_PROCESSES+1][NO_OF_PROCESSES+1][2];
 void initialise(){
     for(int i = 0; i < NO_OF_PROCESSES+1; ++i){
         for(int j = 0; j < NO_OF_PROCESSES+1; ++j){
-            pipe(filedes[i][j]); //Creating a pipe
+            pipe(filedes[i][j]); //Creating a pipe for every entity
         }
     }
     return;
@@ -48,7 +48,6 @@ int readMessage(int sender, int receiver){
     read(filedes[sender][receiver][0], &message, sizeof(int));
     //The above line reads the message in the pipe
     //In case no message is present in the pipe, the process is sent into wait state by the OS
-    //The waiting process is awakened once a message is put inside the pipe by some sender
     return message;
 }
 
