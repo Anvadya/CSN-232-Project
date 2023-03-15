@@ -120,10 +120,9 @@ void barberThread(void *tmp)
         sem_wait(&barbers);                                 // Barber goes to sleep
         sem_wait(&mutex);                                   // Mutex to protect seat changes
         next++;
-        next = next % TOTAL_CHAIRS;                         // Select next customer
-        myNext = next;
-        c = seatPocket[myNext];                  
-        seatPocket[myNext] =(pthread_self());     
+        next = (next) % TOTAL_CHAIRS;                       // Select next customer
+        c = seatPocket[next];                  
+        seatPocket[next] =(pthread_self());     
         sem_post(&mutex);
         sem_post(&customers);                               //Customer 'c' is getting a haircut
         printf("Barber-%d was woken up by Customer-%d and is cutting his/her hair.\n",index,c);
