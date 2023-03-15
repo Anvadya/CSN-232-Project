@@ -12,7 +12,7 @@
 #define BARBER_COUNT 4          // Total number of barbers
 #define CUSTOMER_COUNT 30       // Total number of customers
 #define TIME 3                  // Hair cutting time for each customer
-#define UPPER 800000            // Vary these UPPER and LOWER values to vary the time gap in between customers arrival
+#define UPPER 800000
 #define LOWER 200000
 
 // Variable initialization
@@ -82,7 +82,6 @@ void delay()
 //Customer process
 void customerThread(void *tmp) 
 {   
-    int seat;
     sem_wait(&mutex);                                   // Mutex to protect seat changes
     count++;                                            
     printf("Customer-%d with Id:%d has entered the shop. \n",count,pthread_self());
@@ -91,8 +90,7 @@ void customerThread(void *tmp)
         freeSeats--;                                    
         printf("Customer-%d is sitting on a chair in the waiting room.\n",count);
         nextSeat = (++nextSeat) % TOTAL_CHAIRS;         // Select a chair to sit
-        seat = nextSeat;
-        seatPocket[seat] = count;                       // Tells who is sitting on the seat
+        seatPocket[nextSeat] = count;                       // Tells who is sitting on the seat
         sem_post(&mutex);                               // Release the mutex
         sem_post(&barbers);                             // Wake up barber
         sem_wait(&customers);                           // Add to customers queue
@@ -112,7 +110,7 @@ void customerThread(void *tmp)
 void barberThread(void *tmp) 
 {   
     int index = *(int *)(tmp);      
-    int myNext, c;
+    int  c;
     printf("Barber-%d with Id:%d has entered the Shop. \n",index,pthread_self());
     while(1) 
     {   
