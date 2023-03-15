@@ -1,1 +1,1 @@
-# CSN-232-Project
+# CSN 232 Project
