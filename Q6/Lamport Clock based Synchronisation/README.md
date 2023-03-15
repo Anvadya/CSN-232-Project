@@ -128,5 +128,5 @@ Thus, threads equal to the number of processes are created here and they start e
 
 ### THREADED IMPLEMENTATION
 
-Thus, the processes are assigned seperate, newly created threads to run, and inter-thread communication required to provide partial ordering is facilitated through the shared memory - the matrix `operations[][]`.
+Thus, the processes are assigned seperate, newly created threads to run, and inter-thread communication required to provide partial ordering is facilitated through the usage of pipes.
 
