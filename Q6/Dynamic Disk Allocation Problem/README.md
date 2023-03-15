@@ -1,5 +1,11 @@
 # DYNAMIC DISK ALLOCATION USING SEGMENT TREES
 
+In Distributed Systems, many different systems/processes need to access memory at once. Mutual exclusion is often required to maintain correctness of the algorithms. We can achieve this mutual exclusion in two different ways naively:
+* Using a mutex over the entire memory, this option is bad as only one process can use the memory at once, blocking all the other memory locations.
+* Using a mutex over every word in the memory, this option is bad as for using N memory words O(N) time would be required for obtaining the locks. Trapping to the kernel is a very time consuming operations and hence this is a bad approach.
+
+We present a new method for obtaining and releasing consecutive memory locations (we use the fact that programs have high spatial locality and usually need to access consecutive memory locations) by creating a data structure. This data structure requires just one mutex/semaphore and a segment tree.
+
 Segment trees can be used for efficient disk allocation by representing the disk space as 
 a binary tree data structure. In this tree, each node represents a segment 
 of the disk, and the children of a node represent the two halves of that segment.
