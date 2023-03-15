@@ -124,4 +124,9 @@ Thus, threads equal to the number of processes are created here and they start e
 > `pthread_join()` function waits for the thread specified by `process_thr[i]` to terminate.
 > If that thread has already terminated, then it returns immediately.
 
+---
+
+### THREADED IMPLEMENTATION
+
+Thus, the processes are assigned seperate, newly created threads to run, and inter-thread communication required to provide partial ordering is facilitated through the shared memory - the matrix `operations[][]`.
 
