@@ -10,8 +10,8 @@
 // Define various constants
 #define TOTAL_CHAIRS 16         // Total capacity of the waiting room
 #define BARBER_COUNT 4          // Total number of barbers
-#define CUSTOMER_COUNT 30       // Total number of customers
-#define TIME 3                  // Hair cutting time for each customer
+#define CUSTOMER_COUNT 64       // Total number of customers
+#define TIME 6                  // Hair cutting time for each customer
 #define UPPER 800000
 #define LOWER 200000
 
